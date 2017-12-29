@@ -47,3 +47,39 @@ def RetrieveTree(i):
       {'no surfacing': {0: 'no', 1: {'flippers': {0: {'head': {0: 'no', 1: 'yes'}}, 1: 'no'}}}}
     ]
   return tree_list[i]
+
+def PlotMidText(cntr_pt, parent_pt, txt_str):
+  x_mid = (parent_pt[0]-cntr_pt[0])/2.0 + cntr_pt[0]
+  y_mid = (parent_pt[1]-cntr_pt[1])/2.0 + cntr_pt[1]
+  CreatePlot.ax1.text(x_mid, y_mid, txt_str, va="center", ha="center", rotation=30)
+
+def PlotTree(tree, parent_pt, node_txt):#if the first key tells you what feat was split on
+    leaf_num = getNumLeafs(tree)  #this determines the x width of this tree
+    depth = GetTreeDepth(tree)
+    first_str = tree.keys()[0]     #the text label for this node should be this
+    cntr_pt = (plotTree.xOff + (1.0 + float(leaf_num))/2.0/plotTree.totalW, plotTree.yOff)
+    plotMidText(cntr_pt, parent_pt, node_txt)
+    plotNode(first_str, cntr_pt, parent_pt, decisionNode)
+    secondDict = tree[first_str]
+    plotTree.yOff = plotTree.yOff - 1.0/plotTree.totalD
+    for key in secondDict.keys():
+        if type(secondDict[key]).__name__=='dict':#test to see if the nodes are dictonaires, if not they are leaf nodes   
+            plotTree(secondDict[key],cntr_pt,str(key))        #recursion
+        else:   #it's a leaf node print the leaf node
+            plotTree.xOff = plotTree.xOff + 1.0/plotTree.totalW
+            plotNode(secondDict[key], (plotTree.xOff, plotTree.yOff), cntr_pt, leafNode)
+            plotMidText((plotTree.xOff, plotTree.yOff), cntr_pt, str(key))
+    plotTree.yOff = plotTree.yOff + 1.0/plotTree.totalD
+#if you do get a dictonary you know it's a tree, and the first element will be another dict
+
+def createPlot(tree):
+    fig = plt.figure(1, facecolor='white')
+    fig.clf()
+    axprops = dict(xticks=[], yticks=[])
+    createPlot.ax1 = plt.subplot(111, frameon=False, **axprops)    #no ticks
+    #createPlot.ax1 = plt.subplot(111, frameon=False) #ticks for demo puropses 
+    PlotTree.totalW = float(getNumLeafs(tree))
+    PlotTree.totalD = float(GetTreeDepth(tree))
+    PlotTree.xOff = -0.5/PlotTree.totalW; PlotTree.yOff = 1.0;
+    PlotTree(tree, (0.5,1.0), '')
+    plt.show()
