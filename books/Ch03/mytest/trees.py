@@ -39,8 +39,6 @@ def LoadDataSet(file):
 
   return mat, label_list
 
-
-
 def CreateDataSet2():
   dataSet = [[1, 1, 'yes'],
     [1, 1, 'yes'],
@@ -126,6 +124,15 @@ def CreateTree(data_set, labels):
 
   return my_tree
 
-
+def Classify(tree,labels,vec):
+    first_str = tree.keys()[0]
+    second_dict = tree[first_str]
+    feat_idx = labels.index(first_str)
+    key = vec[feat_idx]
+    val_of_feat = second_dict[key]
+    if isinstance(val_of_feat, dict): 
+        class_label = Classify(val_of_feat, labels, vec)
+    else: class_label = val_of_feat
+    return class_label
 
 

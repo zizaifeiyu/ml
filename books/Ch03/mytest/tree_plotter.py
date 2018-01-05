@@ -9,13 +9,14 @@ def PlotNode(node_txt, center_pt, parent_pt, node_type):
       xytext=center_pt, textcoords='axes fraction', 
       va="center", ha="center", bbox=node_type, arrowprops=arrow_args);
 
-def CreatePlot():
-  fig = plt.figure(1, facecolor='white');
-  fig.clf();
-  CreatePlot.ax1 = plt.subplot(111, frameon=False);
-  PlotNode('a decision node', (0.5, 0.1), (0.1, 0.5), decision_node);
-  PlotNode('a leaf node', (0.8, 0.1), (0.3, 0.8), leaf_node);
-  plt.show();
+#
+#def CreatePlot():
+#  fig = plt.figure(1, facecolor='white');
+#  fig.clf();
+#  CreatePlot.ax1 = plt.subplot(111, frameon=False);
+#  PlotNode('a decision node', (0.5, 0.1), (0.1, 0.5), decision_node);
+#  PlotNode('a leaf node', (0.8, 0.1), (0.3, 0.8), leaf_node);
+#  plt.show();
 
 def GetNumLeafs(tree):
   num_leafs = 0
@@ -72,11 +73,11 @@ def PlotTree(tree, parent_pt, node_txt):#if the first key tells you what feat wa
     plotTree.yOff = plotTree.yOff + 1.0/plotTree.totalD
 #if you do get a dictonary you know it's a tree, and the first element will be another dict
 
-def createPlot(tree):
+def CreatePlot(tree):
     fig = plt.figure(1, facecolor='white')
     fig.clf()
     axprops = dict(xticks=[], yticks=[])
-    createPlot.ax1 = plt.subplot(111, frameon=False, **axprops)    #no ticks
+    CreatePlot.ax1 = plt.subplot(111, frameon=False, **axprops)    #no ticks
     #createPlot.ax1 = plt.subplot(111, frameon=False) #ticks for demo puropses 
     PlotTree.totalW = float(getNumLeafs(tree))
     PlotTree.totalD = float(GetTreeDepth(tree))
